@@ -323,6 +323,8 @@ casper.test.begin("Smoke Test case which covers basic features", 35, function su
         casper.viewport(1366, 768).then(function () {
             this.thenOpen("http://127.0.0.1:8080/edit.html?notebook=acd1573cdf5e6b842364bd86e47b3d6c");
             this.wait(8000);
+            this.reload();
+            this.wait(6000);
 
             test.comment('⌚️  Opening Notebook Flexdashboard.html ...');
 
@@ -332,34 +334,47 @@ casper.test.begin("Smoke Test case which covers basic features", 35, function su
                 this.wait(2000);
                 this.capture("./Images/Check for Flexdashboard.png");
                 console.log("opening dropdown menu");
-                if (this.test.assertSelectorHasText("#view-type", "flexdashboard.html")) {
-                    this.click("#view-type > li:nth-child(2) > a:nth-child(1)");
-                    this.wait(2000);
-                    if (this.click("#share-link > i:nth-child(1)")) {
-                        this.wait(8000);
-                        this.viewport(1366, 768).withPopup(/flexdashboard.html/, function () {
-                            this.wait(20000);
-                            flex_dash = this.getCurrentUrl();
-                            console.log(flex_dash);
-                            casper.wait(20000).then(function () {
-                                this.page.switchToChildFrame(0);
-                                casper.withFrame(0, function () {
-                                    this.test.assertExists(".navbar-brand", "Navigation bar exists in Flexdashboard");
-                                    this.test.assertSelectorHasText("#lung-deaths-all > div:nth-child(1)", "Lung Deaths (All)", "Plot has been generated")
-                                    this.test.assertVisible("#lung-deaths-all > div:nth-child(2)", "desired element is visble")
-                                });
-                                this.page.switchToParentFrame();
-                            });
-                        });
-                    }//if close
-                    else {
-                        console.log("Maa chudao");
-                    }//else close
-                }//if close
-                else {
-                    console.log(colorizer.colorize("Flexdashboard isn't available. Please install the dependencies related to it ", "WARN_BAR"));
-                    // console.log("");
-                }
+                // if (this.test.assertSelectorHasText("#view-type", "flexdashboard.html")) {
+                //     this.click("#view-type > li:nth-child(2) > a:nth-child(1)");
+                //     this.wait(2000);
+                //     if (this.click("#share-link > i:nth-child(1)")) {
+                //         this.wait(8000);
+                //         this.viewport(1366, 768).withPopup(/flexdashboard.html/, function () {
+                //             this.wait(20000);
+                //             flex_dash = this.getCurrentUrl();
+                //             console.log(flex_dash);
+                //             casper.wait(20000).then(function () {
+                //                 this.page.switchToChildFrame(0);
+                //                 casper.withFrame(0, function () {
+                //                     this.test.assertExists(".navbar-brand", "Navigation bar exists in Flexdashboard");
+                //                     this.test.assertSelectorHasText("#lung-deaths-all > div:nth-child(1)", "Lung Deaths (All)", "Plot has been generated")
+                //                     this.test.assertVisible("#lung-deaths-all > div:nth-child(2)", "desired element is visble")
+                //                 });
+                //                 this.page.switchToParentFrame();
+                //             });
+                //         });
+                //     }//if close
+                //     else {
+                //         console.log("Maa chudao");
+                //     }//else close
+                // }//if close
+                // else {
+                //     console.log(colorizer.colorize("Flexdashboard isn't available. Please install the dependencies related to it ", "WARN_BAR"));
+                //     // console.log("");
+                // }
+                this.thenOpen("http://127.0.0.1:8080/shared.R/rcloud.flexdashboard/flexdashboard.html?notebook=acd1573cdf5e6b842364bd86e47b3d6c");
+                this.wait(20000);
+                flex_dash = this.getCurrentUrl();
+                console.log(flex_dash);
+                casper.wait(20000).then(function () {
+                    this.page.switchToChildFrame(0);
+                    casper.withFrame(0, function () {
+                        this.test.assertExists(".navbar-brand", "Navigation bar exists in Flexdashboard");
+                        this.test.assertSelectorHasText("#lung-deaths-all > div:nth-child(1)", "Lung Deaths (All)", "Plot has been generated")
+                        this.test.assertVisible("#lung-deaths-all > div:nth-child(2)", "desired element is visble")
+                    });
+                    this.page.switchToParentFrame();
+                });
             });
         });
     });
