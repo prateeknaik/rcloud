@@ -41,20 +41,19 @@ cd /home/travis/build/prateeknaik/rcloud/services
 sudo sed -i -e '2iROOT=/home/travis/build/prateeknaik/rcloud\' rcloud-sks
 sudo sh rcloud-sks &
 
-Rscript -e 'chooseCRANmirror(ind=81)'
-Rscript -e 'install.packages("XML", repos=c("http://RForge.net", "http://R.research.att.com"), type="source")'
-Rscript -e 'install.packages("rcloud.dcplot", repos="http://rforge.net")'
-Rscript -e 'install.packages("rpython2", repos="http://rforge.net")'
-Rscript -e 'install.packages("xml2", repos=c("http://RForge.net", "http://R.research.att.com"), type="source")'
-Rscript -e 'install.packages("drat", repos="https://cran.rstudio.com")'
+sudo Rscript -e 'chooseCRANmirror(ind=81)'
+sudo Rscript -e 'install.packages("XML", repos=c("http://RForge.net", "http://R.research.att.com"), type="source")'
+sudo Rscript -e 'install.packages("rcloud.dcplot", repos="http://rforge.net")'
+sudo Rscript -e 'install.packages("rpython2", repos="http://rforge.net")'
+sudo Rscript -e 'install.packages("xml2", repos=c("http://RForge.net", "http://R.research.att.com"), type="source")'
+sudo Rscript -e 'install.packages("drat", repos="https://cran.rstudio.com")'
 
-Rscript -e 'install.packages("devtools", repos="http://RForge.net")'
-Rscript -e 'install.packages("devtools", repos="http://rforge.net")'
-Rscript -e 'devtools::install_github("hadley/devtools")'
-Rscript -e 'devtools::install_github("att/rcloud.rmd")'
-Rscript -e 'devtools::install_github("att/rcloud.shiny")'
-Rscript -e 'devtools::install_github("att/rcloud.htmlwidgets")'
-Rscript -e 'devtools::install_github("att/rcloud.flexdashboard")'
+sudo Rscript -e 'install.packages("devtools", repos="http://RForge.net")'
+sudo Rscript -e 'devtools::install_github("hadley/devtools")'
+sudo Rscript -e 'devtools::install_github("att/rcloud.rmd")'
+sudo Rscript -e 'devtools::install_github("att/rcloud.shiny")'
+sudo Rscript -e 'devtools::install_github("att/rcloud.htmlwidgets")'
+sudo Rscript -e 'devtools::install_github("att/rcloud.flexdashboard")'
 
 
 cd /home/travis/build/prateeknaik/rcloud/tests
