@@ -102,7 +102,7 @@ cp -Rf $HOME/Images/* ./tests/Images/
 #add, commit and push files to the cloned branch (eg: "AUTO_IMG" branch)
 git add -f .
 git commit -m "Travis build $TRAVIS_BUILD_NUMBER pushed to AUTO_IMG"
-git push https://prateeknaik:musigma12@github.com/prateeknaik/rcloud.git AUTO_IMG > /dev/null
+git push https://prateeknaik:P12345678k@github.com/prateeknaik/rcloud.git AUTO_IMG > /dev/null
 # git push -fq origin AUTO_IMG > /dev/null
 echo -e "The test images are uploaded \n"
 
