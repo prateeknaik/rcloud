@@ -47,7 +47,7 @@ casper.test.begin("Smoke Test case which covers basic features", 35, function su
 
     casper.wait(4000).then(function () {
         casper.echo('⌚️  Validating page for the RCloud page with Shareable link icon and cell trash icon...');
-        this.capture("./Images/RCLOUD_PAGE.png");
+        // this.capture("./Images/RCLOUD_PAGE.png");
         functions.validation(casper);
         this.wait(15000);
         this.thenOpen('http://127.0.0.1:8080/edit.html?notebook=564af357b532422620a6');
@@ -66,7 +66,7 @@ casper.test.begin("Smoke Test case which covers basic features", 35, function su
         functions.create_notebook(casper);
         console.log("Verified that new notebook can be created");
         this.wait(15000);
-        this.capture("./Images/AfterNotebookCreation.png");
+        // this.capture("./Images/AfterNotebookCreation.png");
     });
 
     casper.then(function () {
@@ -81,7 +81,7 @@ casper.test.begin("Smoke Test case which covers basic features", 35, function su
 
     casper.wait(4000).then(function () {
         functions.addcontentstocell(casper, content);
-        this.capture("./Images/CheckForCell.png");
+        // this.capture("./Images/CheckForCell.png");
     });
 
     //Saving the notebook details
@@ -308,6 +308,7 @@ casper.test.begin("Smoke Test case which covers basic features", 35, function su
             //Opening advanced dropdown option
             casper.then(function () {
                 functions.open_advanceddiv(casper);
+                this.capture("./Images/IMport_rmd.png");
                 // this.click("#rmdImport");
                 casper.click(x('//*[text()="Import Rmarkdown file"]'));//Import
                 console.log("Clicking on import Rmarkdown file option form the dropdown");
@@ -407,7 +408,7 @@ casper.test.begin("Smoke Test case which covers basic features", 35, function su
             this.waitForSelector("span.dropdown", function () {
                 console.log("choosing flexdashboard from the dropdown");
                 this.click("span.dropdown");
-                this.wait(2000);
+                this.wait(5000);
                 this.capture("./Images/Check for Flexdashboard.png");
                 console.log("opening dropdown menu");
                 if (this.test.assertSelectorHasText("#view-type", "flexdashboard.html")) {
