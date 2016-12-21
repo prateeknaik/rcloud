@@ -63,10 +63,10 @@ casper.test.begin("Smoke Test case which covers basic features", 35, function su
         test.comment('⌚️  Creating new cell and adding contents to the cell...');
         this.wait(3000);
         functions.addnewcell(casper);
-        this.wait(5000);
-        var session_err = this.fetchText("#session-info-panel");
-        console.log(colorizer.colorize("SESSION DIV PRODUCED ERROR ", "RED_BAR"));
-        console.log("Session div error ---> " + session_err);
+        this.wait(3000);
+        // var session_err = this.fetchText("#session-info-panel");
+        // console.log(colorizer.colorize("SESSION DIV PRODUCED ERROR ", "RED_BAR"));
+        // console.log("Session div error ---> " + session_err);
     });
 
     casper.wait(4000).then(function () {
