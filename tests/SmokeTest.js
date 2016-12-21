@@ -25,6 +25,16 @@ casper.test.begin("Smoke Test case which covers basic features", 35, function su
     var content = '"Welcome to RCloud"';
     var URL, url, NB_ID, URL1, url2, flex_dash;
 
+    var fileName1 = 'SampleFiles/waste-lands.Rmd'; // File path directory
+    var URL, counter, i,v, Notebook,flag;
+    var system = require('system')
+    var currentFile = require('system').args[4];
+    var curFilePath = fs.absolute(currentFile);
+    var curFilePath = curFilePath.replace(currentFile, '');
+    fileName1 = curFilePath + fileName1;
+    var title = "Waste Lands";
+    var temp, temp1, res, str;
+
     casper.start(rcloud_url, function () {
         functions.inject_jquery(casper);
     });
@@ -292,6 +302,73 @@ casper.test.begin("Smoke Test case which covers basic features", 35, function su
         functions.fork(casper);
     });
 
+    casper.then(function(){
+        //Importing Rmarkdown file 
+        casper.wait(2000).then(function () {
+            //Opening advanced dropdown option
+            casper.then(function () {
+                functions.open_advanceddiv(casper);
+                // this.click("#rmdImport");
+                casper.click(x('//*[text()="Import Rmarkdown file"]'));//Import
+                console.log("Clicking on import Rmarkdown file option form the dropdown");
+                this.wait(3000);
+            });
+
+            //Selecting desired file from the directory
+            casper.then(function () {
+                this.evaluate(function (fileName1) {
+                    __utils__.findOne('input[id="notebook-file-upload"]').setAttribute('value', fileName1)
+                }, {fileName: fileName1});
+                this.page.uploadFile('input[id="notebook-file-upload"]', fileName1);
+                console.log('Selecting a file');
+            });
+
+            casper.wait(5000);
+        });
+
+
+        casper.wait(2000).then(function () {
+            this.test.assertExists("div.container:nth-child(2) > p:nth-child(2) > div:nth-child(1) > pre:nth-child(1)", "Notebook description is present");
+            casper.click(x('//*[text()="Import"]'));
+            console.log("Clicking on import button")
+            this.wait(3000);
+        });
+
+        casper.then(function (){
+            this.thenOpen(URL);
+            this.wait(8000);
+        });
+
+        casper.then(function (){
+            flag = 0;//to check if notebook has been found
+            var counter = 0;//counts the number of notebooks
+            do
+            {
+                counter = counter + 1;
+                
+            } while (this.visible("ul.jqtree_common:nth-child(1) > li:nth-child(1) > ul:nth-child(2) > li:nth-child(1) > ul:nth-child(2) > li:nth-child("+ counter +") > div:nth-child(1) > span:nth-child(1)"));
+            counter = counter + 1;
+            for (v = 1; v <= counter; v++) {
+                this.wait(2000);
+                temp1 = this.fetchText("ul.jqtree_common:nth-child(1) > li:nth-child(1) > ul:nth-child(2) > li:nth-child(1) > ul:nth-child(2) > li:nth-child("+ v +") > div:nth-child(1) > span:nth-child(1)");
+                if (temp1 == title) {
+                    flag = 1;
+                    break;
+                }
+            }//for closes
+            this.test.assertEquals(flag, 1, "Located the imported Rmarkdown notebook");        
+        });
+
+        casper.then(function(){
+            if (flag == 1) {
+                this.test.assertEquals(flag, 1, "Import Notebook from File, Notebook with title " + title + " is PRESENT under Notebooks tree");
+            }
+            else {
+                this.test.assertEquals(flag, 0, "Import Notebook from File, Notebook with title " + title + " is ABSENT under Notebooks tree");
+            }
+        });
+    })
+
     casper.wait(5000).then(function () {
         test.comment('⌚️  Testing Shareable links ...');
         //Notebook.R
@@ -325,7 +402,6 @@ casper.test.begin("Smoke Test case which covers basic features", 35, function su
             this.wait(8000);
             this.reload();
             this.wait(6000);
-
             test.comment('⌚️  Opening Notebook Flexdashboard.html ...');
 
             this.waitForSelector("span.dropdown", function () {
@@ -334,47 +410,35 @@ casper.test.begin("Smoke Test case which covers basic features", 35, function su
                 this.wait(2000);
                 this.capture("./Images/Check for Flexdashboard.png");
                 console.log("opening dropdown menu");
-                // if (this.test.assertSelectorHasText("#view-type", "flexdashboard.html")) {
-                //     this.click("#view-type > li:nth-child(2) > a:nth-child(1)");
-                //     this.wait(2000);
-                //     if (this.click("#share-link > i:nth-child(1)")) {
-                //         this.wait(8000);
-                //         this.viewport(1366, 768).withPopup(/flexdashboard.html/, function () {
-                //             this.wait(20000);
-                //             flex_dash = this.getCurrentUrl();
-                //             console.log(flex_dash);
-                //             casper.wait(20000).then(function () {
-                //                 this.page.switchToChildFrame(0);
-                //                 casper.withFrame(0, function () {
-                //                     this.test.assertExists(".navbar-brand", "Navigation bar exists in Flexdashboard");
-                //                     this.test.assertSelectorHasText("#lung-deaths-all > div:nth-child(1)", "Lung Deaths (All)", "Plot has been generated")
-                //                     this.test.assertVisible("#lung-deaths-all > div:nth-child(2)", "desired element is visble")
-                //                 });
-                //                 this.page.switchToParentFrame();
-                //             });
-                //         });
-                //     }//if close
-                //     else {
-                //         console.log("Maa chudao");
-                //     }//else close
-                // }//if close
-                // else {
-                //     console.log(colorizer.colorize("Flexdashboard isn't available. Please install the dependencies related to it ", "WARN_BAR"));
-                //     // console.log("");
-                // }
-                this.thenOpen("http://127.0.0.1:8080/shared.R/rcloud.flexdashboard/flexdashboard.html?notebook=acd1573cdf5e6b842364bd86e47b3d6c");
-                this.wait(20000);
-                flex_dash = this.getCurrentUrl();
-                console.log(flex_dash);
-                casper.wait(20000).then(function () {
-                    this.page.switchToChildFrame(0);
-                    casper.withFrame(0, function () {
-                        this.test.assertExists(".navbar-brand", "Navigation bar exists in Flexdashboard");
-                        this.test.assertSelectorHasText("#lung-deaths-all > div:nth-child(1)", "Lung Deaths (All)", "Plot has been generated")
-                        this.test.assertVisible("#lung-deaths-all > div:nth-child(2)", "desired element is visble")
-                    });
-                    this.page.switchToParentFrame();
-                });
+                if (this.test.assertSelectorHasText("#view-type", "flexdashboard.html")) {
+                    this.click("#view-type > li:nth-child(2) > a:nth-child(1)");
+                    this.wait(2000);
+                    if (this.click("#share-link > i:nth-child(1)")) {
+                        this.wait(8000);
+                        this.viewport(1366, 768).withPopup(/flexdashboard.html/, function () {
+                            this.wait(20000);
+                            flex_dash = this.getCurrentUrl();
+                            console.log(flex_dash);
+                            this.capture("./Images/Flexdashboard_html.png");
+                            casper.wait(20000).then(function () {
+                                this.page.switchToChildFrame(0);
+                                casper.withFrame(0, function () {
+                                    this.test.assertExists(".navbar-brand", "Navigation bar exists in Flexdashboard");
+                                    this.test.assertSelectorHasText("#lung-deaths-all > div:nth-child(1)", "Lung Deaths (All)", "Plot has been generated")
+                                    this.test.assertVisible("#lung-deaths-all > div:nth-child(2)", "desired element is visble")
+                                });
+                                this.page.switchToParentFrame();
+                            });
+                        });
+                    }                                                       // 2nd if close
+                    else {
+                        console.log("Maa chudao");
+                    }                                                       // 2nd else close
+                }                                                           // 1st if close
+                else {
+                    console.log(colorizer.colorize("Flexdashboard isn't available. Please install the dependencies related to it ", "WARN_BAR"));
+                    // console.log("");
+                }                                                           //1st else close
             });
         });
     });
