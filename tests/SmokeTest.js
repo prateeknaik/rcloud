@@ -302,15 +302,19 @@ casper.test.begin("Smoke Test case which covers basic features", 35, function su
         functions.fork(casper);
     });
 
+    casper.reload();
+    casper.wait(8000);
+
+    //Importing Rmarkdown file 
     casper.then(function(){
-        //Importing Rmarkdown file 
         casper.wait(2000).then(function () {
             //Opening advanced dropdown option
             casper.then(function () {
                 functions.open_advanceddiv(casper);
-                this.capture("./Images/IMport_rmd.png");
+                this.wait(3000);
+                this.capture("./Images/Import_rmd.png");
                 // this.click("#rmdImport");
-                casper.click(x('//*[text()="Import Rmarkdown file"]'));//Import
+                casper.click(x('//*[text()="Import Rmarkdown file"]'));//Import button
                 console.log("Clicking on import Rmarkdown file option form the dropdown");
                 this.wait(3000);
             });
@@ -323,12 +327,12 @@ casper.test.begin("Smoke Test case which covers basic features", 35, function su
                 this.page.uploadFile('input[id="notebook-file-upload"]', fileName1);
                 console.log('Selecting a file');
             });
-
             casper.wait(5000);
         });
 
 
         casper.wait(2000).then(function () {
+            this.capture("./Images/Import_rmd_descr.png");
             this.test.assertExists("div.container:nth-child(2) > p:nth-child(2) > div:nth-child(1) > pre:nth-child(1)", "Notebook description is present");
             casper.click(x('//*[text()="Import"]'));
             console.log("Clicking on import button")
@@ -336,7 +340,8 @@ casper.test.begin("Smoke Test case which covers basic features", 35, function su
         });
 
         casper.then(function (){
-            this.thenOpen(URL);
+            // this.thenOpen(URL);
+            this.reload();
             this.wait(8000);
         });
 
