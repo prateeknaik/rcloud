@@ -316,7 +316,7 @@ casper.test.begin("Smoke Test case which covers basic features", 39, function su
             this.wait(3000);
             this.capture("./Images/Import_rmd.png");
             // this.click("#rmdImport");
-            if (this.assertExists("#rmdImport")) {
+            if (this.test.assertExists("#rmdImport")) {
                 console.log("Clicking on import Rmarkdown file option form the dropdown");
                 casper.click(x('//*[text()="Import Rmarkdown file"]')); //Import button
                 this.wait(3000);
