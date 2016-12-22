@@ -1,4 +1,4 @@
-casper.test.begin("Smoke Test case which covers basic features", 35, function suite(test) {
+casper.test.begin("Smoke Test case which covers basic features", 39, function suite(test) {
 
     var x = require('casper').selectXPath;//required if we detect an element using xpath
     var github_username = casper.cli.options.username;//user input github username
@@ -153,7 +153,6 @@ casper.test.begin("Smoke Test case which covers basic features", 35, function su
         });
     });
 
-
     functions.open_advanceddiv(casper);
 
     //Verifying for Load Notebook ID
@@ -302,7 +301,7 @@ casper.test.begin("Smoke Test case which covers basic features", 35, function su
         functions.fork(casper);
     });
 
-    casper.reload();
+    casper.thenOpen(URL);
     casper.wait(8000);
 
     //Importing Rmarkdown file 
