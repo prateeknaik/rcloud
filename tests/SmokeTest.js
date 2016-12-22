@@ -319,9 +319,17 @@ casper.test.begin("Smoke Test case which covers basic features", 39, function su
             if (this.test.assertExists("#rmdImport")) {
                 console.log("Import Rmarkdown option present");
                 // casper.click(x('//*[text()="Import Rmarkdown file"]')); //Import button
-                this.click("#rmdImport");
+                this.click(x(".//*[@id='rmdImport']"));
                 console.log("Clicking on import Rmarkdown file option form the dropdown");
                 this.wait(3000);
+                
+                if (this.test.assertVisible(x(".//*[@id='import-notebook-file-dialog']/div/div/div[1]"))){
+                    console.log("Modal window present");
+                }
+                else{
+                    console.log("MAAAAA CHUDAO");
+                }
+
                 //Selecting desired file from the directory
                 casper.then(function () {
                     this.evaluate(function (fileName1) {
