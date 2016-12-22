@@ -1,5 +1,5 @@
 addons:
-  firefox: '44.0'
+  firefox: '50.1.0'
 language: c
 node_js:
   - '0.12'
@@ -51,7 +51,6 @@ after_success:
 notifications:
   email:
     recipients:
-    - gordon@woodhull.com
     - prateek.naik@mu-sigma.com
     on_success: always
     on_failure: always
